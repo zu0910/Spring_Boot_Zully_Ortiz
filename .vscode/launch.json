@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-HellowordApplication<helloword>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.helloword.HellowordApplication",
+            "projectName": "helloword",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
