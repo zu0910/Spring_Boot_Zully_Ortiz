@@ -9,7 +9,7 @@ import com.zully.demojpa.domain.Persona;;
 public interface PersonRepository extends JpaRepository<Persona, Long>{
     List<Persona> findByNameContains(String name);
     List<Persona> findByLanguajeEquals(String name);
-
-    
+    List<Persona> findByIdEquals(Long id);
+    List<Persona> findByNameEquals(String name);
 
 }
