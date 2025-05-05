@@ -45,7 +45,7 @@ public class Person {
     @JsonBackReference // Marca el lado que si seralizamos 
     private Rol rol;
 
-    @OneToOne(mappedBy = "person")
+    @OneToOne(mappedBy = "person", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Passport passport;
 

@@ -2,17 +2,19 @@ package com.zully.demojpa.aplication.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 
 import com.zully.demojpa.domain.Person;
-import com.zully.demojpa.domain.Rol;
+import com.zully.demojpa.domain.dto.PersonRequest;
 
+@Service
 public interface PersonService {
 
     public List<Person> findAllUsersByFilter(String filter, String value);
-    public List<Rol> findAllRolesByFilter(String filter, String value);
-    public Rol createNewRol (String name);
-
-    // Actualizar persona 
+    public Person patchPerson(Long id,PersonRequest personDto);
+    
+/*
+ // Actualizar persona 
     public Person updatePerson(Long id, Person person);
     // Eliminar persona
     public void deletePerson(Long id);
@@ -21,4 +23,10 @@ public interface PersonService {
 
     public Rol updateRol(Long id, String name);
     public void deleteRol(Long id);
+ */
+    
+
+    
+    
+    
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 // import jakarta.persistence.FetchType;
@@ -22,7 +23,7 @@ public class Rol {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "rol", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "rol", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonManagedReference // Marca el lado que si seralizamos 
     private List<Person> persons = new ArrayList<>();
 

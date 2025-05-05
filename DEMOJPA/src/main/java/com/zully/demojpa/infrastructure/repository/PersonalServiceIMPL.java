@@ -3,26 +3,24 @@ package com.zully.demojpa.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.zully.demojpa.aplication.service.PersonService;
 import com.zully.demojpa.domain.Person;
-import com.zully.demojpa.domain.Rol;
-import com.zully.demojpa.infrastructure.error.PersonNotFoundException;
-import com.zully.demojpa.infrastructure.error.RolDuplicateException;
-import com.zully.demojpa.infrastructure.error.RolNotFoundException;
+import com.zully.demojpa.domain.dto.PersonRequest;
+
+import jakarta.persistence.EntityNotFoundException;
+
+
 
 @Service
 public class PersonalServiceIMPL implements PersonService{
     
     private final PersonRepository personRepository;
-    private final RoleRepository roleRepository;
     
 
-    public PersonalServiceIMPL(PersonRepository personRepository, RoleRepository _roleRepository) {
+    public PersonalServiceIMPL(PersonRepository personRepository) {
         this.personRepository = personRepository;
-        this.roleRepository = _roleRepository;
     }
 
     @Override
@@ -36,30 +34,24 @@ public class PersonalServiceIMPL implements PersonService{
     }
 
     @Override
-    public List<Rol> findAllRolesByFilter(String filter, String value) {
-        
-        return roleRepository.findAll();
-    }
-    
-    @Override
-    public Rol createNewRol(String name){
-        Rol newRol = new Rol();
-        newRol.setName(name);
-
-        if (getRolByName(name).isPresent()){
-            throw new RolDuplicateException("El Rol" +name+ "ya está registrado",
-            HttpStatus.INTERNAL_SERVER_ERROR);
+    public Person patchPerson(Long id, PersonRequest personDto) {
+        Person person = personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se encontro el usuario solicitado"));
+        if(personDto.getName() != null){
+            person.setName(personDto.getName());
+        }
+        if(personDto.getSuername() != null){
+            person.setLastName(personDto.getSuername());
         }
 
-        return roleRepository.save(newRol);
+        if(personDto.getSkill() != null){
+            person.setLanguaje(personDto.getSkill());
+        }
+        personRepository.save(person);
+        return person;
     }
 
-    private Optional<Rol> getRolByName(String rolName){
-        return roleRepository.findByName(rolName);
-    }
 
-    // Actualizar persona 
-
+    /*
     @Override
     public Person updatePerson(Long id, Person updaPerson){
         Optional<Person> existingPerson = personRepository.findById(id);
@@ -73,7 +65,6 @@ public class PersonalServiceIMPL implements PersonService{
         return personRepository.save(person);
 
     }
-
     // Eliminar persona
 
     @Override
@@ -83,7 +74,9 @@ public class PersonalServiceIMPL implements PersonService{
         }
         personRepository.deleteById(id);
     }
-
+    */
+    /*
+    MI FORMA DE HACER UPDATE Y DELETE
     // Actualizar Rol
 
     @Override
@@ -100,7 +93,6 @@ public class PersonalServiceIMPL implements PersonService{
         return roleRepository.save(rol);
 
     }
-
     // Eliminar Rol
 
     @Override
@@ -110,6 +102,7 @@ public class PersonalServiceIMPL implements PersonService{
         }
         roleRepository.deleteById(id);
     }
+    */
 
 
 
