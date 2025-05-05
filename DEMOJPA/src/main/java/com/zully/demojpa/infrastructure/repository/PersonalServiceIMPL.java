@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.zully.demojpa.aplication.service.PersonService;
 import com.zully.demojpa.domain.Person;
 import com.zully.demojpa.domain.Rol;
+import com.zully.demojpa.infrastructure.error.PersonNotFoundException;
 import com.zully.demojpa.infrastructure.error.RolDuplicateException;
+import com.zully.demojpa.infrastructure.error.RolNotFoundException;
 
 @Service
 public class PersonalServiceIMPL implements PersonService{
@@ -54,6 +56,59 @@ public class PersonalServiceIMPL implements PersonService{
 
     private Optional<Rol> getRolByName(String rolName){
         return roleRepository.findByName(rolName);
+    }
+
+    // Actualizar persona 
+
+    @Override
+    public Person updatePerson(Long id, Person updaPerson){
+        Optional<Person> existingPerson = personRepository.findById(id);
+        if (!existingPerson.isPresent()){
+            throw new PersonNotFoundException("Persona con ID" + id + " no encontrada", HttpStatus.NOT_FOUND);
+        }
+        Person person = existingPerson.get();
+        person.setName(updaPerson.getName());
+        person.setLastName(updaPerson.getLastName());
+        person.setLanguaje(updaPerson.getLanguaje());
+        return personRepository.save(person);
+
+    }
+
+    // Eliminar persona
+
+    @Override
+    public void deletePerson(Long id){
+        if(!personRepository.existsById(id)){
+            throw new PersonNotFoundException("Persona con ID" + id + " no encontrada", HttpStatus.NOT_FOUND);
+        }
+        personRepository.deleteById(id);
+    }
+
+    // Actualizar Rol
+
+    @Override
+    public Rol updateRol(Long id, String name){
+        Optional<Rol> existingRol = roleRepository.findById(id);
+        if (!existingRol.isPresent()){
+            throw new RolNotFoundException("Rol con ID" + id + " no encontrada", HttpStatus.NOT_FOUND);
+        }
+        if (getRolByName(name).isPresent()){
+            throw new RolNotFoundException("El Rol" + name + " ya está registrada", HttpStatus.BAD_REQUEST);
+        }
+        Rol rol = existingRol.get();
+        rol.setName((name));
+        return roleRepository.save(rol);
+
+    }
+
+    // Eliminar Rol
+
+    @Override
+    public void deleteRol(Long id){
+        if(!roleRepository.existsById(id)){
+            throw new RolNotFoundException("Rol con ID" + id + " no encontrada", HttpStatus.NOT_FOUND);
+        }
+        roleRepository.deleteById(id);
     }
 
 

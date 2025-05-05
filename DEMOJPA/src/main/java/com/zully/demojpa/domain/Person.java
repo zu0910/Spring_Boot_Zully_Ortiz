@@ -115,5 +115,9 @@ public class Person {
         this.rol = rol;
     }
 
+    public Rol getRol() {
+        throw new UnsupportedOperationException("Unimplemented method 'getRol'");
+    }
+
 
 }

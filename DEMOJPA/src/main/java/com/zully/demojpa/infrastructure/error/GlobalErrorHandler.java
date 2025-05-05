@@ -1,6 +1,6 @@
 package com.zully.demojpa.infrastructure.error;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +32,21 @@ public class GlobalErrorHandler {
         .body(
             Map.of(
                 "error", e.getMessage(),
-                 "statusCode", e.getStatus().value()
+                "statusCode", e.getStatus().value()
             )
         );
+    }
+
+    @ExceptionHandler(PersonNotFoundException.class)
+    public ResponseEntity<?> handlePersonNotFoundException(PersonNotFoundException e){
+        return ResponseEntity.status(e.getStatus())
+            .body(Map.of("error", e.getMessage(), "statusCode", e.getStatus().value()));
+    }
+
+    @ExceptionHandler(RolNotFoundException.class)
+    public ResponseEntity<?> handlePersonNotFoundException(RolNotFoundException e){
+        return ResponseEntity.status(e.getStatus())
+            .body(Map.of("error", e.getMessage(), "statusCode", e.getStatus().value()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
