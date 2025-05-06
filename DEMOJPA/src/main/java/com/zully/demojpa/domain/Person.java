@@ -119,5 +119,13 @@ public class Person {
         throw new UnsupportedOperationException("Unimplemented method 'getRol'");
     }
 
+    public Passport getPassport() {
+        return passport;
+    }
 
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+    }
+
+    
 }

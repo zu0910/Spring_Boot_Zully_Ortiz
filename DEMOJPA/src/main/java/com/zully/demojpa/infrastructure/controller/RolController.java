@@ -19,6 +19,7 @@ import com.zully.demojpa.domain.Project;
 import com.zully.demojpa.domain.Rol;
 import com.zully.demojpa.domain.RoleRequest;
 import com.zully.demojpa.domain.dto.PersonRequest;
+import com.zully.demojpa.domain.dto.PersonResponse;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,46 +30,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 
+// Repositorio: clase que se va encargar de administrar esos datos, la logica que trae los datos sean independientes
+// Capa intermedia entre el contralador y los datos
+// Controlador: exponer los tipos de endpoint
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ApiController {
-    // /api/nombre_clase
-    private final ProjectService projectService;
+public class RolController {
+
     private final RolService rolService;
-    private final PersonService personService;
 
     
-
-    public ApiController(ProjectService projectService, PersonService personService, RolService rolService) {
-        this.personService = personService;
-        this.projectService = projectService;
+    public RolController( RolService rolService) {
         this.rolService = rolService;
     }
 
-
-    // http://localhost:8080/api/users // all
-    // http://localhost:8080/api/users?filter=language&value=python 
-    // http://localhost:8080/api/users?filter=a // valerie
-    @GetMapping("/users")
-    // Listar todos los usuarios que hay en forma de JSON
-    public List<Person> findAll(
-        @RequestParam(name="filter", defaultValue = "") String filter,
-        @RequestParam(name="value", defaultValue = "") String value
-    ){
-        List<Person> results = personService.findAllUsersByFilter(filter,value);
-        return results;
-    }
-    
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<Person> parcialUpdatePerson(@PathVariable Long id, @RequestBody PersonRequest personDto){
-
-        return ResponseEntity.ok().body(personService.patchPerson(id, personDto));
-    }
-
-    // Repositorio: clase que se va encargar de administrar esos datos, la logica que trae los datos sean independientes
-    // Capa intermedia entre el contralador y los datos
-    // Controlador: exponer los tipos de endpoint
     
     @GetMapping("/roles")
     // Listar todos los usuarios que hay en forma de JSON
@@ -93,28 +69,8 @@ public class ApiController {
 
     
 
-    @GetMapping("/projects")
-    // Listar todos los usuarios que hay en forma de JSON
-    public List<Project> findAllProjects(
-        @RequestParam(name="filter", defaultValue = "") String filter,
-        @RequestParam(name="value", defaultValue = "") String value
-    ){
-        List<Project> results = projectService.findAllProyects();
-        return results;
-    }
-    /*
-     @PutMapping("/users/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody Person person) {
-        return ResponseEntity.ok(personService.updatePerson(id, person));
-    }
-
-    @DeleteMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePerson(@PathVariable Long id){
-        personService.deletePerson(id);
-    }
-     */
-    //Actualizar y eliminar persona
+   
+    
     //Actualizar y eliminar roles
     /*
      @PutMapping("/roles/{id}")
